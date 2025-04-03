@@ -21,7 +21,7 @@ public class MyExceptionHandler {
     private ResponseEntity<MyErrorResponse> handleMyBusinessException(MyBusinessException e) {
         var resposeBody = MyErrorResponse.buildMyErrorResponse(e.getMessage());
 
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resposeBody);
+        return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(resposeBody);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
