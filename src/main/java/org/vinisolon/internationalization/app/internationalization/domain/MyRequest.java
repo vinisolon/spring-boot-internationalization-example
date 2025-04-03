@@ -7,10 +7,10 @@ import lombok.Data;
 @Data
 public class MyRequest {
 
-    @NotBlank(message = "text cannot be blank or null")
+    @NotBlank(message = "{text.not.blank}")
     private String text;
 
-    @NotNull(message = "value cannot be null")
+    @NotNull(message = "{value.not.null}")
     private Integer value;
 
 }

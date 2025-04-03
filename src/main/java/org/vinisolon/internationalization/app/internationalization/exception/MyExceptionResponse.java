@@ -5,22 +5,27 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
 @Data
 @Builder
-public class MyErrorResponse {
-
-    private String message;
+@ToString
+public class MyExceptionResponse {
 
     @Builder.Default
     @Setter(AccessLevel.PRIVATE)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime timestamp = LocalDateTime.now();
 
-    public static MyErrorResponse buildMyErrorResponse(String message) {
-        return MyErrorResponse.builder()
+    private Integer status;
+
+    private String message;
+
+    public static MyExceptionResponse buildExceptionResponse(Integer status, String message) {
+        return MyExceptionResponse.builder()
+                .status(status)
                 .message(message)
                 .build();
     }
