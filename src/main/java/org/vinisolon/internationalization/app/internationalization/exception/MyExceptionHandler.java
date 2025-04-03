@@ -2,6 +2,7 @@ package org.vinisolon.internationalization.app.internationalization.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -28,10 +29,11 @@ public class MyExceptionHandler {
         var errors = e.getBindingResult()
                 .getFieldErrors()
                 .stream()
-                .findFirst()
-                .orElseThrow();
+                .map(FieldError::getDefaultMessage)
+                .toList()
+                .toString();
 
-        var resposeBody = MyErrorResponse.buildMyErrorResponse(errors.toString());
+        var resposeBody = MyErrorResponse.buildMyErrorResponse(errors);
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resposeBody);
     }
