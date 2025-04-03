@@ -10,7 +10,7 @@ public class MyRequest {
     @NotBlank(message = "text cannot be blank or null")
     private String text;
 
-    @NotNull(message = "value cannot or null")
+    @NotNull(message = "value cannot be null")
     private Integer value;
 
 }
