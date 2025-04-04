@@ -1,16 +1,21 @@
 package org.vinisolon.internationalization.app.internationalization.exception;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.ResourceBundle;
+
 import static org.vinisolon.internationalization.app.internationalization.exception.MyExceptionResponse.buildExceptionResponse;
 import static org.vinisolon.internationalization.app.internationalization.exception.MyValidationResponse.buildValidationResponse;
 
 @RestControllerAdvice
 public class MyExceptionHandler {
+
+    private static final String EXCEPTION_BUNDLE = "exception-messages";
 
     @ExceptionHandler(Exception.class)
     private ResponseEntity<MyExceptionResponse> handleException(Exception e) {
@@ -20,10 +25,13 @@ public class MyExceptionHandler {
     }
 
     @ExceptionHandler(MyBusinessException.class)
-    private ResponseEntity<MyExceptionResponse> handleMyBusinessException(MyBusinessException e) {
-        var resposeBody = buildExceptionResponse(HttpStatus.NOT_IMPLEMENTED.value(), e.getMessage());
+    private ResponseEntity<MyExceptionResponse> handleMyBusinessException(MyBusinessException e,
+                                                                          HttpServletRequest request) {
+        var message = ResourceBundle.getBundle(EXCEPTION_BUNDLE, request.getLocale()).getString(e.getMessage());
 
-        return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(resposeBody);
+        var resposeBody = buildExceptionResponse(e.getHttpStatus().value(), message);
+
+        return ResponseEntity.status(e.getHttpStatus()).body(resposeBody);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

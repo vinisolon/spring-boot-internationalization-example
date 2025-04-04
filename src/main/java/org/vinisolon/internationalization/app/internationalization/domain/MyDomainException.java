@@ -4,8 +4,8 @@ import org.vinisolon.internationalization.app.internationalization.exception.MyB
 
 public class MyDomainException extends MyBusinessException {
 
-    public MyDomainException(String message) {
-        super(message);
+    public MyDomainException(MyDomainMessageKeyEnum messageKey) {
+        super(messageKey);
     }
 
 }
